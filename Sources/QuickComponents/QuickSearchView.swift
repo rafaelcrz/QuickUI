@@ -82,8 +82,14 @@ public struct QuickSearchView<Content: View, Background: View>: View {
                     .frame(maxHeight: .infinity, alignment: .bottom)
                     .zIndex(1)
                     .overlay(alignment: .bottom) {
-                        textFieldView()
-                            .padding()
+                        if #available(iOS 26, *) {
+                            textFieldView()
+                                .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 18))
+                                .padding(.horizontal)
+                        } else {
+                            textFieldView()
+                                .padding()
+                        }
                     }
             }
             
@@ -93,11 +99,6 @@ public struct QuickSearchView<Content: View, Background: View>: View {
                     dismiss()
                 }
         }
-//        .overlay(alignment: .top, content: {
-//            QuickVariableBlurView(maxBlurRadius: 5, direction: .blurredTopClearBottom, startOffset: 0)
-//                .ignoresSafeArea()
-//                .frame(height: 14)
-//        })
         .overlay(alignment: .topTrailing, content: {
             if showDismissButton {
                 Button {
@@ -185,14 +186,13 @@ public struct QuickSearchView<Content: View, Background: View>: View {
                 .textInputAutocapitalization(.never)
                 .font(.title3)
             if !termToSearch.isEmpty {
-                Button {
-                    withAnimation(.smooth(duration: 0.5)) {
-                        termToSearch = ""
-                    }
-                } label: {
-                    Image(systemName: "x.circle.fill")
+                if #available(iOS 26, *) {
+                    clearTermButtonView(systemName: "xmark.circle.fill")
+                        .font(.title3)
+                        .glassEffect(.regular.interactive())
+                } else {
+                    clearTermButtonView(systemName: "x.circle.fill")
                         .font(.title2)
-                        .foregroundStyle(.white)
                 }
             }
         }
@@ -202,6 +202,22 @@ public struct QuickSearchView<Content: View, Background: View>: View {
             Color(.systemGray).opacity(0.5)
         }
         .cornerRadius(18)
+    }
+    
+    @ViewBuilder
+    private func clearTermButtonView(
+        systemName: String,
+        padding: CGFloat = 0
+    ) -> some View {
+        Button {
+            withAnimation(.smooth(duration: 0.5)) {
+                termToSearch = ""
+            }
+        } label: {
+            Image(systemName: systemName)
+                .padding(padding)
+                .foregroundStyle(.white)
+        }
     }
 }
 
@@ -226,6 +242,6 @@ public struct QuickSearchView<Content: View, Background: View>: View {
         },
         dismiss: {
         },
-        termToSearch: .constant("")
+        termToSearch: .constant("Hello, world")
     )
 }
