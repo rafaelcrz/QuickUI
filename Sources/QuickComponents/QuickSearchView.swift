@@ -84,7 +84,7 @@ public struct QuickSearchView<Content: View, Background: View>: View {
                     .overlay(alignment: .bottom) {
                         if #available(iOS 26, *) {
                             textFieldView()
-                                .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 18))
+                                .glassEffect(.clear.interactive(), in: .rect(cornerRadius: 18))
                                 .padding(.horizontal)
                                 .padding(.bottom)
                         } else {
