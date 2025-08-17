@@ -200,7 +200,9 @@ public struct QuickSearchView<Content: View, Background: View>: View {
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background {
-            Color(.systemGray).opacity(0.5)
+            if #available(iOS 26, *) {} else {
+                Color(.systemGray).opacity(0.5)
+            }
         }
         .cornerRadius(18)
     }
