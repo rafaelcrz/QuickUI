@@ -86,6 +86,7 @@ public struct QuickSearchView<Content: View, Background: View>: View {
                             textFieldView()
                                 .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 18))
                                 .padding(.horizontal)
+                                .padding(.bottom)
                         } else {
                             textFieldView()
                                 .padding()
