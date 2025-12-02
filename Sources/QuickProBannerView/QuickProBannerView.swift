@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 public struct QuickProBannerView: View {
+    private let cornerRadius: Double = 20
     private let imageIcon: String
     private let appName: String
     private let buttonTitle: String
@@ -30,6 +31,18 @@ public struct QuickProBannerView: View {
     }
     
     public var body: some View {
+        Group {
+            if #available(iOS 26, *) {
+                button
+//                    .glassEffect(.clear.interactive(), in: .rect(cornerRadius: cornerRadius)) //xcode26
+            } else {
+                button
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var button: some View {
         HStack {
             Image(imageIcon, bundle: bundle)
                 .resizable()
@@ -64,7 +77,7 @@ public struct QuickProBannerView: View {
                 endPoint: .bottomTrailing
             )
         )
-        .cornerRadius(20)
+        .cornerRadius(cornerRadius)
     }
 }
 
