@@ -84,7 +84,7 @@ public struct QuickSearchView<Content: View, Background: View>: View {
                     .overlay(alignment: .bottom) {
                         if #available(iOS 26, *) {
                             textFieldView()
-                                .glassEffect(.clear.interactive(), in: .rect(cornerRadius: 18))
+//                                .glassEffect(.clear.interactive(), in: .rect(cornerRadius: 18))
                                 .padding(.horizontal)
                                 .padding(.bottom)
                         } else {
@@ -95,6 +95,7 @@ public struct QuickSearchView<Content: View, Background: View>: View {
             }
             
             background()
+                .zIndex(-1)
                 .ignoresSafeArea()
                 .onTapGesture {
                     dismiss()
@@ -190,7 +191,7 @@ public struct QuickSearchView<Content: View, Background: View>: View {
                 if #available(iOS 26, *) {
                     clearTermButtonView(systemName: "xmark.circle.fill")
                         .font(.title3)
-                        .glassEffect(.regular.interactive())
+//                        .glassEffect(.regular.interactive())
                 } else {
                     clearTermButtonView(systemName: "x.circle.fill")
                         .font(.title2)
@@ -238,10 +239,12 @@ public struct QuickSearchView<Content: View, Background: View>: View {
             ForEach(0..<100) { index in
                 Text("Item \(index)")
                     .padding(4)
+                    .background(Color.white)
+                    .shadow(radius: 2)
             }
         },
         background: {
-            Color(.secondarySystemBackground)
+            Color(.systemBackground)
         },
         dismiss: {
         },
