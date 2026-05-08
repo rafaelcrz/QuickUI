@@ -10,12 +10,12 @@ import SwiftUI
 import UIKit
 
 public final class QuickFeedbackToogle {
-    internal var isEnabled: Bool = false
-    
+    public private(set) var isEnabled: Bool = false
+
     @MainActor public static let shared: QuickFeedbackToogle = .init()
-    
+
     private init() {}
-    
+
     public func toggle(enabled: Bool) {
         isEnabled = enabled
     }
@@ -41,7 +41,7 @@ public enum QuickFeedbackGenerator {
             case .warning:
                 UINotificationFeedbackGenerator().notificationOccurred(.warning)
             case .error:
-                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
             }
         }
     }
