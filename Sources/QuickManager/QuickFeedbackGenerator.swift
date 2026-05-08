@@ -22,18 +22,24 @@ public final class QuickFeedbackToogle {
 }
 
 public enum QuickFeedbackGenerator {
-    case style(QuickFeedbackStyleType)
+    case style(QuickFeedbackStyleType, intensity: CGFloat? = nil)
     case notification(QuickFeedbackNotificationType)
     case selection
-    
+
     @MainActor public func impact() {
         guard QuickFeedbackToogle.shared.isEnabled else { return }
-        
+
         switch self {
         case .selection:
             UISelectionFeedbackGenerator().selectionChanged()
-        case .style(let feedbackGeneratorType):
-            ImpactFeedbackGeneratorFactory(type: feedbackGeneratorType).make().impactOccurred()
+        case .style(let feedbackGeneratorType, let intensity):
+            let generator = ImpactFeedbackGeneratorFactory(type: feedbackGeneratorType).make()
+            if let intensity {
+                let clamped = min(1.0, max(0.0, intensity))
+                generator.impactOccurred(intensity: clamped)
+            } else {
+                generator.impactOccurred()
+            }
         case .notification(let type):
             switch type {
             case .success:
@@ -47,9 +53,23 @@ public enum QuickFeedbackGenerator {
     }
 }
 
+// MARK: - Convenience shortcuts
+
+public extension QuickFeedbackGenerator {
+    static let success: QuickFeedbackGenerator = .notification(.success)
+    static let warning: QuickFeedbackGenerator = .notification(.warning)
+    static let error: QuickFeedbackGenerator = .notification(.error)
+
+    static let light: QuickFeedbackGenerator = .style(.light)
+    static let medium: QuickFeedbackGenerator = .style(.medium)
+    static let heavy: QuickFeedbackGenerator = .style(.heavy)
+    static let soft: QuickFeedbackGenerator = .style(.soft)
+    static let rigid: QuickFeedbackGenerator = .style(.rigid)
+}
+
 private struct ImpactFeedbackGeneratorFactory {
     let type: QuickFeedbackStyleType
-    
+
     @MainActor func make() -> UIImpactFeedbackGenerator {
         switch type {
         case .light:
@@ -65,4 +85,3 @@ private struct ImpactFeedbackGeneratorFactory {
         }
     }
 }
-
