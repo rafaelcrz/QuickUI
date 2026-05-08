@@ -21,7 +21,7 @@ public final class QuickFeedbackToogle {
     }
 }
 
-public enum QuickFeedbackGenerator {
+public enum QuickFeedbackGenerator: Sendable {
     case style(QuickFeedbackStyleType, intensity: CGFloat? = nil)
     case notification(QuickFeedbackNotificationType)
     case selection
