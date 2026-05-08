@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum QuickFeedbackNotificationType: Int {
+public enum QuickFeedbackNotificationType: Int, Sendable {
     case success
     case warning
     case error
