@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum QuickFeedbackStyleType: Int {
+public enum QuickFeedbackStyleType: Int, Sendable {
     case light
     case medium
     case heavy
